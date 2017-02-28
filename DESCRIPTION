@@ -3,7 +3,7 @@ Title: RAMM API utilities for use in R
 Version: 0.0.0.9000
 Authors@R: person("Peter", "Hill", email = "peter.hill@mwhglobal.com", role = c("aut", "cre"))
 Description: Provides some functionality to connect to the RAMM API to return simple datasets back
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.2.3)
 License: GPL3
 Encoding: UTF-8
 LazyData: true
