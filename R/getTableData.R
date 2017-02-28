@@ -1,11 +1,3 @@
-library(tidyverse)
-library(jsonlite)
-library(rgdal)
-library(rgeos)
-library(leaflet)
-library(htmlwidgets)
-library(httr)
-
 #' getTableData Function
 #' 
 #' Retrieves data from the specified RAMM table from the authorised database (as per the token in the headers).
@@ -27,7 +19,7 @@ getTableData = function(headers,table_name,named_columns,get_geometry=FALSE,expa
   #  Function to query any RAMM table
   #  named_columns is an array e.g. c('road_id','carrway_start_m')
   
-  query_params = toJSON(list(getGeometry=get_geometry
+  query_params = jsonlite::toJSON(list(getGeometry=get_geometry
                              ,tableName=table_name
                              ,loadType='Specified'
                              ,expandLookups=expand_lookups
@@ -36,14 +28,14 @@ getTableData = function(headers,table_name,named_columns,get_geometry=FALSE,expa
                         ,auto_unbox = TRUE
   )
   
-  data_req  = POST(
+  data_req  = httr::POST(
     'https://apps.ramm.co.nz:443/RammApi6.1/v1/data/table' ,
     headers,
     body = query_params
   )
   
-  ct = content(data_req,'text')
-  result = fromJSON(ct)$rows$values
+  ct = httr::content(data_req,'text')
+  result = jsonlite::fromJSON(ct)$rows$values
   
   
   if(get_geometry==TRUE) {

@@ -1,11 +1,3 @@
-library(tidyverse)
-library(jsonlite)
-library(rgdal)
-library(rgeos)
-library(leaflet)
-library(htmlwidgets)
-library(httr)
-
 #' getHeaders Function
 #' 
 #' This function creates the headers for your requests to the RAMM API
@@ -24,7 +16,7 @@ getHeaders = function(userName,password,database) {
   
   site = 'https://apps.ramm.co.nz'
   basePath = '/RammApi6.1/v1/'
-  headers = add_headers('Content-type'='application/json', 'referer'='https://test.com')
+  headers = httr::add_headers('Content-type'='application/json', 'referer'='https://test.com')
   
   #authenticate
   authenticateParams =sprintf('authenticate/login?database=%s&userName=%s&password=%s',
@@ -34,14 +26,14 @@ getHeaders = function(userName,password,database) {
   auth_url = URLencode(paste0(site,basePath,authenticateParams))
   
   #fetch authorization key
-  r = POST(auth_url,
+  r = httr:POST(auth_url,
            headers
            #add_headers('Content-type'='application/json', 'referer'='https://test.com')
   )
   
-  ramm_key = content(r)
+  ramm_key = httr::content(r)
   
-  keyed_headers = add_headers(
+  keyed_headers = httr::add_headers(
     Authorization = paste0('Bearer ',ramm_key),
     'Content-type'='application/json',
     'referer'='https://nz.mwhglobal.com'

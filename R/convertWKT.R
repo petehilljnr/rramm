@@ -1,11 +1,3 @@
-library(tidyverse)
-library(jsonlite)
-library(rgdal)
-library(rgeos)
-library(leaflet)
-library(htmlwidgets)
-library(httr)
-
 #' convertWKT
 #' 
 #' Converts a WKT string from one EPSG to another
@@ -19,13 +11,13 @@ library(httr)
 
 convertWKT = function(wkt,epsg_from,epsg_to){
   
-  crs_from = CRS(paste0("+init=epsg:", epsg_from))
-  crs_to = CRS(paste0("+init=epsg:", epsg_to))
+  crs_from = rgdal::CRS(paste0("+init=epsg:", epsg_from))
+  crs_to = rgdal::CRS(paste0("+init=epsg:", epsg_to))
   
-  geom = readWKT(wkt)
-  proj4string(geom) = crs_from
-  new_geom = spTransform(geom,crs_to)
+  geom = rgeos::readWKT(wkt)
+  sp::proj4string(geom) = crs_from
+  new_geom = rgdal::spTransform(geom,crs_to)
   
-  return(writeWKT(new_geom))
+  return(rgeos::writeWKT(new_geom))
   
 }
