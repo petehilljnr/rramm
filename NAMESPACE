@@ -2,7 +2,7 @@
 
 export(convertWKT)
 export(createFilter)
+export(getAuthorisedHeaders)
 export(getClosestRoads)
 export(getDatabaseDetails)
-export(getHeaders)
 export(getTableData)

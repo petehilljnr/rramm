@@ -1,4 +1,4 @@
-#' getHeaders Function
+#' getAuthorisedHeaders Function
 #'
 #' This function creates the headers for your requests to the RAMM API
 #' @param userName RAMM user login
@@ -6,13 +6,13 @@
 #' @param database Name of the RAMM database you want to connect to
 #' @export
 #' @examples
-#' headers <- getHeaders(userName='xxxx', password='xxxxx', database='A RAMM database')
+#' headers <- getAuthorisedHeaders(userName='api_demo', password='thursday', database='RAMM API Demo')
+#' print(headers)
 
-getHeaders = function(userName,password,database) {
+getAuthorisedHeaders = function(userName,password,database) {
   #  The basis for all of the API calls is the headers with the authorization token
   #  This function should be called first to retrieve a valid token
   #  It returns the headers to be used in subsequent API calls
-  #  TODO:  Error message/catching for invalid login
 
   site = 'https://apps.ramm.co.nz'
   basePath = '/RammApi6.1/v1/'
@@ -27,18 +27,25 @@ getHeaders = function(userName,password,database) {
 
   #fetch authorization key
   r = httr::POST(auth_url,
-           headers
-           #add_headers('Content-type'='application/json', 'referer'='https://test.com')
+                 headers
+                 #add_headers('Content-type'='application/json', 'referer'='https://test.com')
   )
 
-  ramm_key = httr::content(r)
+  #only return the keyed headers if we get a
+  if (r$status_code == 200){
+    ramm_key = httr::content(r)
 
-  keyed_headers = httr::add_headers(
-    Authorization = paste0('Bearer ',ramm_key),
-    'Content-type'='application/json',
-    'referer'='https://nz.mwhglobal.com'
-  )
+    keyed_headers = httr::add_headers(
+      Authorization = paste0('Bearer ',ramm_key),
+      'Content-type'='application/json',
+      'referer'='https://nz.mwhglobal.com'
+    )
 
-  return(keyed_headers)
+    return(keyed_headers)
+  } else {
+    #something has gone wrong with the request,
+    #so raise an error and print the  response to allow debugging
+    print(r)
+    stop('Login Error - please review the Status code to resolve')
+  }
 }
-
