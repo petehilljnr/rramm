@@ -1,10 +1,13 @@
 Package: rramm
 Title: RAMM API utilities for use in R
-Version: 0.1
-Authors@R: person("Peter", "Hill", email = "peter.hill@mwhglobal.com", role = c("aut", "cre"))
+Version: 0.1.1
+Authors@R: c(
+  person("Peter", "Hill", email = "peter.hill@mwhglobal.com", role = c("aut", "cre")),
+  person("Selwyn", "McCracken", email = "selwyn.b.mccracken@mwhglobal.com", role = "aut")
+  )
 Description: Provides some functionality to connect to the RAMM API to return simple datasets back
 Depends: R (>= 3.2.3)
-License: GPL3
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -13,4 +16,5 @@ Imports:
         rgdal,
         rgeos,
         httr
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.0.1
+Suggests: testthat
