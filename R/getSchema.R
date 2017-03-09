@@ -2,9 +2,9 @@
 #'
 #' Retrieves column information for the specified RAMM table
 #'
-#' @param headers A headers object created using the getHeaders function
-#' @param table_name RAMM rable you want column inforamtion for.
-#' @param loadType What type of column information is required - 'CoreAndLocation','Specified' or 'All'
+#' @param headers Authorisation headers created using getHeaders()
+#' @param table_name RAMM table you want column information for.
+#' @param loadType What type of column information is required - 'CoreAndLocation' (i.e. core and primary_key),'Specified' or 'All'
 #' @export
 #' @examples
 #'
