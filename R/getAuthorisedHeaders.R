@@ -16,7 +16,10 @@ getAuthorisedHeaders = function(userName,password,database) {
 
   site = 'https://apps.ramm.co.nz'
   basePath = '/RammApi6.1/v1/'
-  headers = httr::add_headers('Content-type'='application/json', 'referer'='https://test.com')
+  headers = httr::add_headers(
+    'Content-type'='application/json',
+    'referer'='https://nz.mwhglobal.com'
+  )
 
   #authenticate
   authenticateParams =sprintf('authenticate/login?database=%s&userName=%s&password=%s',
@@ -26,9 +29,10 @@ getAuthorisedHeaders = function(userName,password,database) {
   auth_url = URLencode(paste0(site,basePath,authenticateParams))
 
   #fetch authorization key
-  r = httr::POST(auth_url,
-                 headers
-                 #add_headers('Content-type'='application/json', 'referer'='https://test.com')
+  r = httr::POST(
+    auth_url,
+    headers
+    #add_headers('Content-type'='application/json', 'referer'='https://test.com')
   )
 
   #only return the keyed headers if we get a
