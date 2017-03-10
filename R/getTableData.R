@@ -84,7 +84,7 @@ getTableData = function(
   #and convert to SF object and
   if(get_geometry==TRUE) {
     srid = as.numeric(getDatabaseDetails(headers)$mapProjectDetail)
-    print(srid)
+
     result_df = result_df %>%
       sf::st_as_sf(wkt='wkt_geom') %>%
       sf::st_set_crs(srid) %>%
