@@ -4,28 +4,36 @@
 \alias{getTableData}
 \title{getTableData Function}
 \usage{
-getTableData(headers, table_name, named_columns, get_geometry = FALSE,
-  expand_lookups = FALSE, filters = list())
+getTableData(headers, table_name, load_type = "CoreAndLocation",
+  named_columns = "", get_geometry = FALSE, filters = list())
 }
 \arguments{
-\item{headers}{A headers object created using the getHeaders function}
+\item{headers}{A headers object created using the getHeaders function.}
 
 \item{table_name}{The name of the table you want to extract data from (must be a valid table name)}
 
-\item{named_columns}{A vector of all of the columns you want to return (must be valid column names)}
+\item{load_type}{Which columns of data will be returned - can be
+'All', 'CoreAndLocation' (i.e. core columns with primary key) or 'Specified'.}
 
-\item{get_geometry}{Return a geometry(TRUE) or not (FALSE).  Will append the field "wkt_geom" to your returned data}
+\item{named_columns}{If loadType = 'Specified' a character vector of required columns (must be valid column names).}
 
-\item{expand_lookups}{Automatically return the inbuilt lookup names instead of the parent value e.g. road_id returns road name}
+\item{get_geometry}{(Boolean) Return geometry with the data. Returns an SF class data.frame in NZTM coordiantes (i.e. EPSG/SRID 2193).}
 
-\item{filters}{A list of filters created using the createFilter function}
+\item{filters}{A list of filters created using the createFilter function.}
 }
 \description{
 Retrieves data from the specified RAMM table from the authorised database (as per the token in the headers).
 You need to get the headers using the getHeaders() function
 }
 \examples{
-#The following example returns the raw road_id, sign_type, and wkt_geom fields from the sign table of the database authorised through the headers
+\dontrun{
+#The following example returns the raw road_id, sign_type as an SF data.frame with spatial coordinates
 
-sign_table <- getTableData(headers=headers, table_name="sign",named_columns=c("road_id","sign_type"),get_geometry=TRUE, expand_lookups=FALSE)
+sign_table <- getTableData(
+headers=hdrs,
+table_name="sign",
+load_type='specified',
+named_columns=c("road_id","sign_type"),
+get_geometry=TRUE, expand_lookups=FALSE)
+}
 }
