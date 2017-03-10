@@ -27,7 +27,7 @@ getSchema = function(headers,table_name,load_type='CoreAndLocation',columns=''){
   )
 
   data_req = httr::GET(
-    modify_url(
+    httr::modify_url(
       url = paste0('https://apps.ramm.co.nz:443/RammApi6.1/v1/schema/',table_name),
       query=list(
         loadType=load_type_lookup[load_type],
