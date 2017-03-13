@@ -10,6 +10,7 @@
 #' @param named_columns If loadType = 'Specified' a character vector of required columns (must be valid column names).
 #' @param get_geometry (Boolean) Return geometry with the data. Returns an SF class data.frame in NZTM coordiantes (i.e. EPSG/SRID 2193).
 #' @param filters A \strong{LIST} of filters created using createFilter(...).
+#' @importFrom dplyr "%>%"
 #' @export
 #' @examples
 #' \dontrun{

@@ -11,6 +11,7 @@
 #' @param get_geometry (Boolean) Return geometry with the data. Returns an SF class data.frame in NZTM coordiantes (i.e. EPSG/SRID 2193).
 #' @param filters A \strong{LIST} of filters created using createFilter(...).
 #' @param custom_types_df A dataframe of column names and the types that will be forced. needs to be named column_name and column_type
+#' @importFrom dplyr "%>%"
 #' @export
 #'
 
