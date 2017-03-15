@@ -5,6 +5,8 @@
 #' @param headers Authorisation headers created using getHeaders()
 #' @param table_name RAMM table you want column information for.
 #' @param loadType What type of column information is required - 'CoreAndLocation' (i.e. core and primary_key),'Specified' or 'All'
+#' @param named_columns Vector of columns that information is requierd for.
+
 #' @export
 #' @examples
 #'
@@ -18,7 +20,7 @@
 #' getSchema(hdrs,'carr_way','Specified',columns=list('road_id','carr_way_no'))
 #'
 
-getSchema = function(headers,table_name,load_type='CoreAndLocation',columns=''){
+getSchema = function(headers,table_name,load_type='CoreAndLocation',named_columns=''){
   #RAMM load types 0:4 seem a little funky - specify our own
   load_type_lookup = c(
     'CoreAndLocation' = 4,#Core *and* primary key - RAMM core
@@ -31,7 +33,7 @@ getSchema = function(headers,table_name,load_type='CoreAndLocation',columns=''){
       url = paste0('https://apps.ramm.co.nz:443/RammApi6.1/v1/schema/',table_name),
       query=list(
         loadType=load_type_lookup[load_type],
-        columns=paste(columns,collapse=','))
+        columns=paste(named_columns,collapse=','))
     )
    ,
     headers

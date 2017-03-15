@@ -1,6 +1,6 @@
-#' getTableData Function
+#' getTableWithCustomTypes Function
 #'
-#' Retrieves data from the specified RAMM table from the authorised database (as per the token in the headers).
+#' Retrieve RAMM table and force column types - the schema type listing from the RAMM API is not always correct!
 #' You need to get the headers using the getHeaders() function
 #'
 #' @param headers Authorised access headers created using  getHeaders(...).
@@ -10,25 +10,15 @@
 #' @param named_columns If loadType = 'Specified' a character vector of required columns (must be valid column names).
 #' @param get_geometry (Boolean) Return geometry with the data. Returns an SF class data.frame in NZTM coordiantes (i.e. EPSG/SRID 2193).
 #' @param filters A \strong{LIST} of filters created using createFilter(...).
+#' @param custom_types_df A dataframe of column names and the types that will be forced. needs to be named column_name and column_type
 #' @importFrom dplyr "%>%"
 #' @export
-#' @examples
-#' \dontrun{
-#' #The following example returns the raw road_id, sign_type as an SF data.frame with spatial coordinates
 #'
-#' sign_table <- getTableData(
-#' headers=hdrs,
-#' table_name="sign",
-#' load_type='specified',
-#' named_columns=c("road_id","sign_type"),
-#' get_geometry=TRUE
-#' )
-#'
-#' }
 
-getTableData = function(
+getTableWithCustomTypes = function(
   headers,
   table_name,
+  custom_types_df,
   load_type='CoreAndLocation',
   named_columns='',
   get_geometry=FALSE,
@@ -37,9 +27,13 @@ getTableData = function(
   # RAMM POST request does not returning named JSON objects,
   # So have to first get column data type information etc via a getSchema call
 
-  column_info = getSchema(headers,table_name,load_type,named_columns)
+  column_info = getSchema(headers,table_name,load_type,named_columns) %>%
+    left_join(custom_types_df,
+              by = c('columnName'='column_name')
+              )
+
   column_names = column_info$columnName
-  column_types = column_info$R_data_type
+  column_types = column_info$column_type
 
   if(get_geometry==TRUE) {
     column_names = c(column_names, 'wkt_geom')

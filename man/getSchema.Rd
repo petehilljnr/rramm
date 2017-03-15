@@ -4,12 +4,15 @@
 \alias{getSchema}
 \title{getSchema Function}
 \usage{
-getSchema(headers, table_name, load_type = "CoreAndLocation", columns = "")
+getSchema(headers, table_name, load_type = "CoreAndLocation",
+  named_columns = "")
 }
 \arguments{
 \item{headers}{Authorisation headers created using getHeaders()}
 
 \item{table_name}{RAMM table you want column information for.}
+
+\item{named_columns}{Vector of columns that information is requierd for.}
 
 \item{loadType}{What type of column information is required - 'CoreAndLocation' (i.e. core and primary_key),'Specified' or 'All'}
 }
