@@ -43,7 +43,7 @@ getSchema = function(headers,table_name,load_type='CoreAndLocation',named_column
   #map dataclasses to R types
   class_lookup = c(
     '0'='logical',
-    '1'='dunno',
+    '1'='numeric',
     '2'='Date',
     '3'='dunno again',
     '4'='integer',
