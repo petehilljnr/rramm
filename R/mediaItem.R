@@ -22,53 +22,79 @@
 #'
 #' }
 
-downloadMultimedia = function(
-  headers,
-  table_name,
-  asset_id,
-  path
-){
+downloadMultimedia = function(headers,
+                              table_name,
+                              asset_id,
+                              path) {
 
-  data_req  = httr::GET(
-    paste0("https://api.ramm.com:443/v1/multimedia/",table_name,"?assetIds=",asset_id,collapse=""),
-    headers
-  )
-
-  ct = httr::content(data_req)
-
-  metaData = ct %>% {
-    tibble::tibble(
-      id = purrr::map_int(., "id"),
-      fileInfo = purrr::map(., "metaInformation")
+  if (!dir.exists(path)) {
+    stop(paste("The folder", path, "doesn't exist.  You must create it first."))
+  } else {
+    data_req  = httr::GET(
+      paste0(
+        "https://api.ramm.com:443/v1/multimedia/",
+        table_name,
+        "?assetIds=",
+        asset_id,
+        collapse = ""
+      ),
+      headers
     )
-  } %>% dplyr::transmute(
-    id,
-    file_name = purrr::map_chr(fileInfo, "fileName"),
-    file_ext = purrr::map_chr(fileInfo, "fileExtension")
-  )
 
-  metaData = metaData %>%
-    dplyr::mutate(
-      result = purrr::pmap_chr(
-        list(file_name, id),
-        function(file_name, id) {
-          media_req = httr::GET(
-            paste0("https://api.ramm.com:443/v1//multimedia/media/",id,collapse=""),
-            headers
-          )
+    ct = httr::content(data_req)
 
-          if (media_req$status_code != 200){
-            warning(
-              paste('Error downloading file: ',file_name, "(status code: ", media_req$status_code, " )")
-            )
-            "Download Error"
-          } else {
-            tryCatch (
-              {writeBin(httr::content(media_req, "raw"), paste0(path,file_name,collapse=""));"OK"},
-              error=function(err){print (err); "Error"})
-          }
-        }
+    print(data_req$status_code)
+
+    if (data_req$status_code != 200) {
+      stop(paste('Status code', ct$message))
+
+    } else {
+      metaData = ct %>% {
+        tibble::tibble(
+          id = purrr::map_int(., "id"),
+          fileInfo = purrr::map(., "metaInformation")
+        )
+      } %>% dplyr::transmute(
+        id,
+        file_name = purrr::map_chr(fileInfo, "fileName"),
+        file_ext = purrr::map_chr(fileInfo, "fileExtension")
       )
-    )
 
+      metaData = metaData %>%
+        dplyr::mutate(result = purrr::pmap_chr(list(file_name, id),
+                                               function(file_name, id) {
+                                                 media_req = httr::GET(
+                                                   paste0(
+                                                     "https://api.ramm.com:443/v1//multimedia/media/",
+                                                     id,
+                                                     collapse = ""
+                                                   ),
+                                                   headers
+                                                 )
+
+                                                 if (media_req$status_code != 200) {
+                                                   warning(
+                                                     paste(
+                                                       'Error downloading file: ',
+                                                       file_name,
+                                                       "(status code: ",
+                                                       media_req$status_code,
+                                                       " )"
+                                                     )
+                                                   )
+                                                   "Download Error"
+                                                 } else {
+                                                   tryCatch ({
+                                                     writeBin(httr::content(media_req, "raw"),
+                                                              paste0(path, file_name, collapse = ""))
+                                                     "OK"
+                                                   },
+                                                   error = function(err) {
+                                                     print (err)
+                                                     "Error"
+                                                   })
+                                                 }
+                                               }))
+    }
+  }
 }
