@@ -1,6 +1,6 @@
 Package: rramm
 Title: RAMM API utilities for use in R
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
   person("Peter", "Hill", email = "peter.hill@mwhglobal.com", role = c("aut", "cre")),
   person("Selwyn", "McCracken", email = "selwyn.b.mccracken@mwhglobal.com", role = "aut")
@@ -16,6 +16,7 @@ Imports:
         rgdal,
         rgeos,
         httr,
-        sf
+        sf,
+        tibble
 RoxygenNote: 6.0.1
 Suggests: testthat

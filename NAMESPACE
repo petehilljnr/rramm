@@ -2,6 +2,7 @@
 
 export(convertWKT)
 export(createFilter)
+export(downloadMultimedia)
 export(getAuthorisedHeaders)
 export(getClosestRoads)
 export(getDatabaseDetails)
