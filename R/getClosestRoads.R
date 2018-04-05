@@ -28,7 +28,7 @@ getClosestRoads = function(headers, wkt, search_distance=50) {
   )
 
   result = httr::content(data_req,'text')
-  output = httr::fromJSON(result)
+  output = jsonlite::fromJSON(result)
 
   return(output)
 
