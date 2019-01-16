@@ -48,7 +48,10 @@ getSchema = function(headers,table_name,load_type='CoreAndLocation',named_column
     '3'='dunno again',
     '4'='integer',
     '5'='numeric',
-    '6'='character'
+    '6'='character',
+    '7'='character',
+    '8'='character',
+    '9'='character'
     )
 
   result$R_data_type = class_lookup[as.character(result$dataClass)]
