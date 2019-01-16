@@ -91,9 +91,12 @@ getTableData = function(
       )
 
     } else {
-
+      find.list = list("\"","\n","\r")
+      find.string <- paste(unlist(find.list), collapse = "|")
+      
       collapsed_vals = sapply(rows$values,paste,collapse='|')
-
+      collapsed_vals = gsub(find.string,"",collapsed_vals, useBytes = T)
+      
       result_df = read.delim(
         text= collapsed_vals,
         sep='|',
